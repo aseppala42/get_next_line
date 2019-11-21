@@ -6,7 +6,7 @@
 /*   By: aseppala <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 11:47:07 by aseppala          #+#    #+#             */
-/*   Updated: 2019/11/21 16:48:23 by aseppala         ###   ########.fr       */
+/*   Updated: 2019/11/21 18:15:44 by aseppala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int		get_next_line(const int fd, char **line)
 	next = ft_strsplit(buf, '\n');
 	return (get_next_line(fd, line));
 }
-*/
+
 int		get_next_line(const int fd, char **line)
 {
 	static char	**next = 0;
@@ -84,8 +84,7 @@ int		get_next_line(const int fd, char **line)
 		next++;
 		return (1);
 	}
-	ret = read(fd, buf, BUFF_SIZE);
-	if (ret == -1)
+	if ((ret = read(fd, buf, BUFF_SIZE)) == -1)
 		return (-1);
 	if (ret == 0)
 	{
@@ -96,10 +95,10 @@ int		get_next_line(const int fd, char **line)
 	buf[ret] = 0;
 	if (next != 0)
 		*next = ft_strjoindel(*next, ft_strdup(buf));
-	next = ft_strsplit((next ? *next : buf), '\n');
+	next = ft_strsplit((next ? *next : buf), '\n'); // split poistaa vikan nl jos se on sattumalta juuri ennen nullia
 	return (get_next_line(fd, line));
 }
-/*
+*/
 int		get_next_line(const int fd, char **line)
 {
 	static char	*next = 0;
@@ -117,19 +116,23 @@ int		get_next_line(const int fd, char **line)
 		next = tmp;
 		return (1);
 	}
-	if ((ret = read(fd, buf, BUFF_SIZE)) == -1);
+	if ((ret = read(fd, buf, BUFF_SIZE)) == -1)
 		return (-1);
 	if (ret == 0)
 	{
-		*line = ft_strdup(next);
-		ft_strdel(&next);
-		return (*line ? 1 : 0);
+		if (next != 0)
+		{
+			*line = ft_strdup(next);
+			ft_strdel(&next);
+			return (1);
+		}
+		return (0);
 	}
 	buf[ret] = 0;
 	next = ft_strjoindel(next, ft_strdup(buf));
 	return (get_next_line(fd, line));
 }
-
+/*
 int		get_next_line(const int fd, char **line)
 {
 	static char	*next = 0;
