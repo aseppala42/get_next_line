@@ -69,7 +69,7 @@ int		get_next_line(const int fd, char **line)
 	next = ft_strsplit(buf, '\n');
 	return (get_next_line(fd, line));
 }
-
+*/
 int		get_next_line(const int fd, char **line)
 {
 	static char	**next = 0;
@@ -95,10 +95,11 @@ int		get_next_line(const int fd, char **line)
 	buf[ret] = 0;
 	if (next != 0)
 		*next = ft_strjoindel(*next, ft_strdup(buf));
-	next = ft_strsplit((next ? *next : buf), '\n'); // split poistaa vikan nl jos se on sattumalta juuri ennen nullia
+	if (buf[--ret] != '\n')
+		next = ft_strsplit((next ? *next : buf), '\n'); // split poistaa vikan nl jos se on sattumalta juuri ennen nullia
 	return (get_next_line(fd, line));
 }
-*/
+/*
 int		get_next_line(const int fd, char **line)
 {
 	static char	*next = 0;
@@ -132,7 +133,49 @@ int		get_next_line(const int fd, char **line)
 	next = ft_strjoindel(next, ft_strdup(buf));
 	return (get_next_line(fd, line));
 }
-/*
+
+int		get_next_line(const int fd, char **line)
+{
+	static char	*next = 0;
+	char		buf[BUFF_SIZE + 1];
+	char		*tmp;
+	int		ret;
+
+	return (ft_gnl(fd, line, next, buf, ret));
+}
+
+int		get_next_line(const int fd, char **line)
+{
+	static char	*next = 0;
+	char		buf[BUFF_SIZE + 1];
+	char		*tmp;
+	int		ret;
+
+	if (line == 0)
+		return (-1);
+	ret = 1;
+	while (ft_strchr(next, '\n') != 0 && ret != 0)
+	{
+		if ((ret = read(fd, buf, BUFF_SIZE)) == -1)
+			return (-1);
+		buf[ret] = 0;
+		tmp = ft_strjoindel(next, ft_strdup(buf);
+		ft_strdel(next);
+		next = tmp;
+	}
+	if (next == 0)
+		return (0);
+	*line = ft_strndup(next, ft_strchrlen(next, '\n');
+	if (ret != 0)
+	{
+		tmp = ft_strdup(strchr(next, '\n'));
+		ft_strdel(next);
+		next = tmp;
+		return (1);
+	}
+	return (0);
+}
+
 int		get_next_line(const int fd, char **line)
 {
 	static char	*next = 0;
