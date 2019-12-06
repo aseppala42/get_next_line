@@ -6,7 +6,7 @@
 /*   By: aseppala <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 19:29:14 by aseppala          #+#    #+#             */
-/*   Updated: 2019/11/21 11:51:13 by aseppala         ###   ########.fr       */
+/*   Updated: 2019/12/06 12:19:45 by aseppala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void		opener(int ac, char **av, char *line)
 			printf("not cool man, couldn't open the file\n");
 		while ((res = get_next_line(fd, &line)))
 			printf("%d\t%s\n", res, line);
+		printf("%d\t%s\n", res, line);
 		if (close(fd) == -1)
 			printf("shieet, couldn't close the file\n");
 		printf("\n\n");
@@ -35,12 +36,13 @@ void		opener(int ac, char **av, char *line)
 int			main(int ac, char **av)
 {
 	char	*line;
+	int		res;
 
 	line = 0;
 	if (ac > 1)
 		opener(ac, av, line);
 	else
-		while (get_next_line(0, &line))
-			printf("%s\n", line);
+		while ((res = get_next_line(0, &line)))
+			printf("%d\t%s\n", res, line);
 	return (0);
 }
